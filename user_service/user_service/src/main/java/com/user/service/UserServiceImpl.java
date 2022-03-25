@@ -27,7 +27,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(Long id) {
-        Optional<User>  user = userRepo.findById(id);
+        System.out.println("Id from Implementaion: "+id);
+
+        Optional<User>  user = userRepo.findByUserId(id);
+        System.out.println("user from implementaion : " +user.get());
+        System.out.println("user from implementaion Cass: " +user.getClass());
+        System.out.println("user from implementaion : " +user);
         if(!user.isPresent()){
             System.out.println("Not Available");
         }
@@ -36,6 +41,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveUserData(User user) {
+
         userRepo.save(user);
+    }
+
+    @Override
+    public List<User> findAllUsers() {
+        return userRepo.findAll();
     }
 }

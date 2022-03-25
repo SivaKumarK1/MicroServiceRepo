@@ -2,8 +2,10 @@ package com.contact.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "Contact")
 public class Contact {
 @Id
     private Long cId;

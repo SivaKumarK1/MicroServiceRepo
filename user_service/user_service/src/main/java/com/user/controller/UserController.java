@@ -20,21 +20,29 @@ public class UserController {
     private RestTemplate restTemplate;
 
     @PostMapping("/")
-    public User saveUser(@RequestBody User user){
+    public User saveUser(@RequestBody User user) {
+        System.out.println("User Data: " + user);
         userService.saveUserData(user);
         return user;
     }
 
+    @GetMapping("/")
+    public List<User> getAllUsers() {
+    return userService.findAllUsers();
+    }
 
     @GetMapping("/{userId}")
     public User getUser(@PathVariable("userId") Long userId) {
-
-        User user =  userService.getUser(userId);
-        //http://localhost:9002/contact/user/1311
-
-        List contacts = this.restTemplate.getForObject("http://localhost:8081/contact/user/" + user.getUserId(), List.class);
+        System.out.println("GETUSER " + userId);
 
 
+        User user = userService.getUser(userId);
+        System.out.println(user);
+        //http://localhost:8081/contact/user/1311
+
+        List contacts = restTemplate.getForObject("http://localhost:8081/contact/user/" + user.getUserId(), List.class);
+
+        System.out.println(contacts);
         user.setContacts(contacts);
         return user;
 

@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ContactServiceImpl implements ContactService {
@@ -24,18 +24,22 @@ private ContactRepo contactRepo;
 
 
     @Override
-    public List<Contact> fetchUser(Long userId) {
-        Optional<Contact> contact = contactRepo.findById(userId);
-        if(!contact.isPresent()){
+    public  List<Contact> fetchUser(Long userId) {
+        System.out.println("users id is: "+ userId);
+        List<Contact> contact = contactRepo.findByUserId(userId);
+//        contactRepo.findAllByUserId(userId);
+        System.out.println(userId);
+        if(Objects.isNull(contact)){
             System.out.println("Not Available");
         }
-        return (List<Contact>) contact.get();
+        return contact;
     }
 
 
 
     @Override
     public void saveData(Contact contact) {
+
         contactRepo.save(contact);
     }
 
