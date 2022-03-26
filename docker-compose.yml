@@ -2,15 +2,17 @@ version: '3.1'
 services:
   postgresqldb:
     image: postgres
-    container_name: Appsql
+    container_name: springpsql
     ports:
       - "5433:5432"
     environment:
-      - POSTGRES_PASSWORD=root
       - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=adminpassword
       - POSTGRES_DB=postgres
     volumes:
-      - db:/var/lib/postgresql/data
+      - db:/var/lib/postgresql
+    networks:
+      - app-net
 
   user_service:
     container_name: userapp
@@ -20,6 +22,12 @@ services:
       - "8082:8082"
     depends_on:
       - postgresqldb
+#    environment:
+#      - WAIT_HOSTS=contact_service:8081
+#      - WAIT_HOSTS=postgresqldb:5433
+    networks:
+      - app-net
+
 
   contact_service:
     container_name: contactapp
@@ -29,7 +37,17 @@ services:
       - "8081:8081"
     depends_on:
       - postgresqldb
+#    environment:
+#      - WAIT_HOSTS=postgresqldb:5433
+    networks:
+      - app-net
+
 
 
 volumes:
   db:
+
+networks:
+  app-net:
+
+
