@@ -1,14 +1,14 @@
-># Micro Service Postres
+# Micro Service Postres
 
 This is a small project which makes use of two services.
 1. User service
 2. Contact Service
 
->## Prerequisites
+## Prerequisites
 
 * [Docker](), [Git](https://git-scm.com/), [Maven](), [JDK 7 or 8](), [Eclipse or VSCode or Intellij Idea](), [Postman]()
 
->## Installation and Run this project
+## Installation and Run this project
 
 * clone this repository 
     ```git clone https://gitlab.com/SivaKumarK1/Micro_Service_Postgres```
@@ -19,22 +19,22 @@ This is a small project which makes use of two services.
 * To stop all services run 
     ```docker-compose down```
 
->## Endpoint Description
+## Endpoint Description
 
-| SL 	| Endpoint                                    	| Request Type 	|                                                                                                                                                                                                                        	|
+| SL 	| Endpoint                                    	| Request Type  | Data Format in Request Body                                                    |
 |----	|---------------------------------------------	|--------------	|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
-| 1  	| localhost:8082/user/{userid}                         	| GET         	|  
-| 2  	| localhost:8082/user                         	| GET          	|
-| 3  	| localhost:8081/contact/user/{userid}                         	| POST         	|
-| 4  	| localhost:8082/user 	| POST          	|
-| 5  	| localhost:8081/contact/user/{userid} 	| POST          	|
+| 1  	| localhost:8082/user/{userid}                         	| GET         	| ```--------X--------``` | 
+| 2  	| localhost:8082/user                         	| GET          	| ```--------X--------``` |
+| 3  	| localhost:8081/contact/user/{userid}                         	| GET         	| ```--------X--------``` |
+| 4  	| localhost:8082/user 	| POST          	| ``` {"cId" : {contact_id},   "email" : "{user_email}",    "contactName" : "{contact_name}",   "userId" : {user_id}} ``` |
+| 5  	| localhost:8081/contact/user/{userid} 	| POST          	| ``` {"userId":{user_id},  "name": "{user_name}",  "phone": "{user_phone_number}"} ``` |
 
 
->## Authors and acknowledgment
+## Authors and acknowledgment
 * [Anil](https://github.com/AnilComakeIt)
 * [Siva](https://github.com/SivaKumarK1)
 
->## Contributing
+## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
