@@ -25,6 +25,8 @@ build-job:
     - echo "Compiling the code..."
     - docker-compose up --build -d
     - echo "Compile complete."
+    - docker container logs userapp
+    - docker container logs contactapp
 
 docker-job:
   stage: docker-deploy
