@@ -6,7 +6,11 @@ stages:
   - maven-compile # build
   - build #Docker compose up step
   - docker-deploy # Docker Hub
-  
+
+after_script:
+    - docker container logs userapp
+    - docker container logs contactapp
+
 maven-job:
   image: maven
   stage: maven-compile
@@ -25,15 +29,12 @@ build-job:
     - echo "Compiling the code..."
     - docker-compose up --build -d
     - echo "Compile complete."
-    - docker container logs userapp
-    - docker container logs contactapp
 
-docker-job:
-  stage: docker-deploy
-  dependencies:
-    - maven-job
-  script:
-    - sh Docker_Deploy.sh
-    # - docker login -u "anil76201" -p "Reddy@0108" docker.io
-    # - docker-compose push 
+
+# docker-job:
+#   stage: docker-deploy
+#   dependencies:
+#     - maven-job
+#   script:
+#     - sh Docker_Deploy.sh
 
