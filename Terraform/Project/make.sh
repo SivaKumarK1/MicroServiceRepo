@@ -7,7 +7,7 @@ terraform init
 
 terraform plan
 
-terraform apply -var-file="var.tfvars" --auto-approve
+terraform apply  --auto-approve
 
 terraform output | grep -Po '(\d+[.]){3}\d+' > ips
 
