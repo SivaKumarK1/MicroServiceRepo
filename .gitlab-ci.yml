@@ -53,7 +53,7 @@ terraform:
     paths:
       - planfile  
   script:
-    echo "started"
+    - echo "started"
     - terraform validate
     - terraform plan -out "planfile"
     - terraform apply-var-file="var.tfvars" --auto-approve
