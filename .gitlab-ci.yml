@@ -58,6 +58,7 @@ terraform:
   script:
     - echo "started"
     - sh make.sh
+    - cat inventory/hosts
 
   
 ansible:
@@ -76,7 +77,6 @@ ansible:
   script:
     - cd Terraform/Project
     - ansible-playbook -i inventory/hosts playbook.yml
-    - cat inventory/hosts
 
   
 terraform-destroy:
