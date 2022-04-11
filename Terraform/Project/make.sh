@@ -1,7 +1,11 @@
 #!/bin/bash -ex
 
 # terraform changes to instances
+terraform validate
+
 terraform init
+
+terraform plan
 
 terraform apply -var-file="var.tfvars" --auto-approve
 
@@ -18,10 +22,10 @@ rm temp.txt
 sed -i "s/$(awk 'FNR == 6' inventory/hosts > temp.txt && awk '{print $1}' temp.txt)/$(awk "FNR == 1" ips)/g" inventory/hosts
 
 
-sleep 1m
-# Running ansible
-export ANSIBLE_HOST_KEY_CHECKING=False
+# sleep 1m
+# # Running ansible
+# export ANSIBLE_HOST_KEY_CHECKING=False
 
-ansible-playbook -i inventory/hosts playbook.yml
+# ansible-playbook -i inventory/hosts playbook.yml
 
 rm ips  temp.txt
