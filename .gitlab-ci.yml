@@ -3,10 +3,12 @@ services:
   - docker:dind
 
 stages:  
-  - maven-compile # Build
+  - maven-compile # Compile
+  - test # Test
   - build # Docker compose up step
   - docker-deploy # Docker Hub
   - terraform-job # Terraform 
+  - ansible-job # Ansible
 
 # maven-job:
 #   image: maven
@@ -48,14 +50,23 @@ terraform:
   - cd Terraform/Project
   - terraform --version
   - terraform init
-  stage: terraform-job
   artifacts:
     paths:
-      - planfile  
+      - Terraform/Project/inventory/hosts
+
+  stage: terraform-job 
   script:
     - echo "started"
-    - terraform validate
-    - terraform plan -out "planfile"
-    - terraform apply --auto-approve
-    
-  when: manual
+    - ./make.sh
+
+ansible:
+  image: ansible
+  extends: terraform
+  dependencies:
+    - terraform-job
+  before_script:
+    - cd terraform/Project
+    - export ANSIBLE_HOST_KEY_CHECKING=False
+  stage: ansible-job
+  script:
+    - ansible-playbook -i inventory/hosts playbook.yml
