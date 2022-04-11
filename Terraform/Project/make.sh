@@ -22,7 +22,7 @@ rm temp.txt
 sed -i "s/$(awk 'FNR == 6' inventory/hosts > temp.txt && awk '{print $1}' temp.txt)/$(awk "FNR == 1" ips)/g" inventory/hosts
 
 
-# sleep 1m
+sleep 1m
 # # Running ansible
 # export ANSIBLE_HOST_KEY_CHECKING=False
 
