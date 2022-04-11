@@ -42,8 +42,8 @@ terraform:
       - '/usr/bin/env'
       - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
   before_script:
-  - export AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID}
-  - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+  - export access_key=${AWS_ACCESS_KEY_ID}
+  - export secret_key=${AWS_SECRET_ACCESS_KEY}
   - rm -rf .terraform
   - cd Terraform/Project
   - terraform --version
