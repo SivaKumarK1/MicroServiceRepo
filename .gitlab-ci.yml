@@ -45,9 +45,9 @@ terraform:
   - export AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID}
   - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
   - rm -rf .terraform
+  - cd Terraform/Project
   - terraform --version
   - terraform init
-  - cd Terraform/Project
   stage: terraform-job
   artifacts:
     paths:
