@@ -80,11 +80,11 @@ ansible:
   # when: manual
 
   
-terraform-destroy:
-  extends: terraform
-  stage: terraform-job
-  script:
-    - pwd
-    - terraform destroy  --auto-approve
-  when: manual
+# terraform-destroy:
+#   extends: terraform
+#   stage: terraform-job
+#   script:
+#     - pwd
+#     - terraform destroy  --auto-approve
+#   when: manual
   
