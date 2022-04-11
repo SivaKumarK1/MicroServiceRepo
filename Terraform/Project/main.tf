@@ -48,8 +48,8 @@ resource "aws_instance" "Postgres_instance" {
   }
 }
 
-resource "aws_security_group" "microserviceapp-sg" {
-  name        = "Project_sec_grp"
+resource "aws_security_group" "micro_service_app_sg" {
+  name        = "micro_service_app_sg"
   description = "Security_Group"
   ingress {
     from_port   = 22
