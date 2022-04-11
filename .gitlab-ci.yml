@@ -59,6 +59,13 @@ terraform:
     - echo "started"
     - sh make.sh
 
+terraform-destroy:
+  extends: terraform
+  stage: terraform-job
+  script:
+    - terraform destroy --auto-approve
+  when: manual
+  
 ansible:
   image: registry.gitlab.com/torese/docker-ansible
   variables:
