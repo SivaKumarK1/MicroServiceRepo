@@ -1,7 +1,7 @@
 [masters]
-13.232.143.50 ansible_private_key_file=./terraform.pem
+65.1.93.236 ansible_private_key_file=./terraform.pem
 [workers]
-13.232.9.68 ansible_private_key_file=./terraform.pem
+13.127.143.33 ansible_private_key_file=./terraform.pem
 [postgresql]
-13.127.69.12 ansible_private_key_file=./terraform.pem
+3.108.228.137 ansible_private_key_file=./terraform.pem
    
