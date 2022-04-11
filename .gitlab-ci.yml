@@ -70,7 +70,6 @@ ansible:
   dependencies:
     - terraform
   before_script:
-    - cd terraform/Project
     - export ANSIBLE_HOST_KEY_CHECKING=False
   stage: ansible-job
   script:
