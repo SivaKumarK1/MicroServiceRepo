@@ -58,6 +58,11 @@ terraform:
   script:
     - echo "started"
     - sh make.sh
+    - sed -i "s/$(awk 'FNR == 2' inventory/hosts > temp.txt && awk '{print $1}' temp.txt)/$(awk "FNR == 2" ips)/g" inventory/hosts
+    - sed -i "s/$(awk 'FNR == 4' inventory/hosts > temp.txt && awk '{print $1}' temp.txt)/$(awk "FNR == 3" ips)/g" inventory/hosts
+    - sed -i "s/$(awk 'FNR == 6' inventory/hosts > temp.txt && awk '{print $1}' temp.txt)/$(awk "FNR == 1" ips)/g" inventory/hosts
+    - sleep 1m
+    - rm ips  temp.txt 
     - cat inventory/hosts
 
   
@@ -77,6 +82,7 @@ ansible:
   script:
     - cd Terraform/Project
     - ansible-playbook -i inventory/hosts playbook.yml
+  when: manual
 
   
 terraform-destroy:
