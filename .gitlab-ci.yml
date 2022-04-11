@@ -59,12 +59,6 @@ terraform:
     - echo "started"
     - sh make.sh
 
-terraform-destroy:
-  extends: terraform
-  stage: terraform-job
-  script:
-    - terraform destroy --auto-approve
-  when: manual
   
 ansible:
   image: registry.gitlab.com/torese/docker-ansible
@@ -82,3 +76,14 @@ ansible:
   script:
     - cd Terraform/Project
     - ansible-playbook -i inventory/hosts playbook.yml
+    - cat inventory/hosts
+
+  
+terraform-destroy:
+  extends: terraform
+  stage: terraform-job
+  script:
+    - pwd
+    - terraform destroy  --auto-approve
+  when: manual
+  
