@@ -57,7 +57,7 @@ terraform:
   stage: terraform-job 
   script:
     - echo "started"
-    - ./make.sh
+    - sh make.sh
 
 ansible:
   image: ansible
