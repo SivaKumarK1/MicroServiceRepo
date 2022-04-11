@@ -55,7 +55,7 @@ terraform:
   script:
     - echo "started"
     - terraform validate
-    - terraform plan -out "planfile" 
+    - terraform plan -out "planfile"
     - terraform apply --auto-approve
     
   when: manual
