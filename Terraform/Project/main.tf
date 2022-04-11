@@ -8,7 +8,7 @@ resource "aws_instance" "Manager" {
   ami             = var.ami
   instance_type   = var.instance_type
   key_name = "${var.key_name}"
-  vpc_security_group_ids = ["${aws_security_group.microserviceapp-sg.id}"]
+  vpc_security_group_ids = ["${aws_security_group.micro_service_app_sg.id}"]
   user_data = "${file("${var.bootstrap_path}")}"
   tags = {
     Name = "Manager_Docker_Swarm"
@@ -30,7 +30,7 @@ resource "aws_instance" "Worker_01" {
   ami             = var.ami
   instance_type   = var.instance_type
   key_name = "${var.key_name}"
-  vpc_security_group_ids = ["${aws_security_group.microserviceapp-sg.id}"]
+  vpc_security_group_ids = ["${aws_security_group.micro_service_app_sg.id}"]
   user_data = "${file("${var.bootstrap_path}")}"
   tags = {
     Name = "Worker01_Docker_Swarm"
@@ -41,7 +41,7 @@ resource "aws_instance" "Postgres_instance" {
   ami             = var.ami
   instance_type   = var.instance_type
   key_name = "${var.key_name}"
-  vpc_security_group_ids = ["${aws_security_group.microserviceapp-sg.id}"]
+  vpc_security_group_ids = ["${aws_security_group.micro_service_app_sg.id}"]
   user_data = "${file("${var.bootstrap_path}")}"
   tags = {
     Name = "Postgres_instance"
