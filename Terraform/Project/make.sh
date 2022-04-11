@@ -9,7 +9,7 @@ terraform plan
 
 terraform apply  --auto-approve
 
-terraform output | grep -Po '(\d+[.]){3}\d+' > ips
+terraform output | grep -o '(\d+[.]){3}\d+' > ips
 
 #change master ip in hosts file
 rm temp.txt
