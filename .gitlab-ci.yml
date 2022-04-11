@@ -63,7 +63,7 @@ ansible:
   image: ansible
   extends: terraform
   dependencies:
-    - terraform-job
+    - terraform
   before_script:
     - cd terraform/Project
     - export ANSIBLE_HOST_KEY_CHECKING=False
