@@ -8,32 +8,32 @@ stages:
   - docker-deploy # Docker Hub
   - terraform-job # Terraform 
 
-maven-job:
-  image: maven
-  stage: maven-compile
-  script:
-    - sh Jars.sh
-  artifacts:
-    paths:
-      - user_service/target/*.jar
-      - contact_service/target/*.jar
+# maven-job:
+#   image: maven
+#   stage: maven-compile
+#   script:
+#     - sh Jars.sh
+#   artifacts:
+#     paths:
+#       - user_service/target/*.jar
+#       - contact_service/target/*.jar
 
-build-job:    
-  stage: build
-  dependencies:
-    - maven-job
-  script:
-    - echo "Compiling the code..."
-    - docker-compose up --build -d
-    - echo "Compile complete."
+# build-job:    
+#   stage: build
+#   dependencies:
+#     - maven-job
+#   script:
+#     - echo "Compiling the code..."
+#     - docker-compose up --build -d
+#     - echo "Compile complete."
 
 
-docker-job:
-  stage: docker-deploy
-  dependencies:
-    - maven-job
-  script:
-    - sh Docker_Deploy.sh
+# docker-job:
+#   stage: docker-deploy
+#   dependencies:
+#     - maven-job
+#   script:
+#     - sh Docker_Deploy.sh
 
 terraform:
   image: 
