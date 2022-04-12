@@ -125,6 +125,7 @@ apply:
     - final plan
   only:
     - main
+  when: delayed
   # This ensures that only one instance of this job can run in case multiple workflows are launched in parallel
   resource_group: TIC_POC1
 
