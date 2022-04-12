@@ -70,7 +70,7 @@ ansible:
     # - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
     # - mkdir -p ~/.ssh
     # - chmod 700 ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add terraform.pem
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > terraform.pem
     - cd terraform/Project
     - export ANSIBLE_HOST_KEY_CHECKING=False
   stage: ansible-job
