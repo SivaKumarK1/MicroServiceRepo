@@ -87,7 +87,7 @@ final plan:
   artifacts:
     name: plan
     paths:
-      - $PLAN
+      - Terraform/Project/$PLAN
     expire_in: 7 days
   only:
     - main
