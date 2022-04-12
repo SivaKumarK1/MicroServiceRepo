@@ -2,6 +2,14 @@ image: docker/compose:latest
 services:
   - docker:dind
 
+variables:
+  # Provides a filename for the Terraform plan file
+  PLAN: plan.tfplan
+  # Provides a filename for the GitLab plan report attached to the merge request
+  JSON_PLAN_FILE: tfplan.json
+  # Provides a clue to Terraform that it is being run in a CI pipeline
+  TF_IN_AUTOMATION: "true"
+
 stages:  
   - maven-compile # Compile
   - test # Test
@@ -95,6 +103,11 @@ apply:
       - '/usr/bin/env'
       - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
   stage: terraform-job-apply
+  before_script:
+    - export AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID}
+    - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    - rm -rf .terraform
+    - cd Terraform/Project
   environment:
     name: TIC_POC1
     on_stop: destroy
@@ -116,6 +129,11 @@ destroy:
     entrypoint:
       - '/usr/bin/env'
       - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+  before_script:
+    - export AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID}
+    - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    - rm -rf .terraform
+    - cd Terraform/Project
   stage: terraform-job-apply
   script:
     - terraform destroy -auto-approve
