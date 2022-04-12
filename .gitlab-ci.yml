@@ -114,9 +114,9 @@ destroy:
 
 ansible:
   image: registry.gitlab.com/torese/docker-ansible
-  # extends: terraform
+  extends: final plan
   dependencies:
-    - terraform
+    - final plan
   before_script:
     - cd Terraform/Project
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > terraform_key.pem
