@@ -126,6 +126,7 @@ apply:
   only:
     - main
   when: delayed
+  start_in: 60 seconds
   # This ensures that only one instance of this job can run in case multiple workflows are launched in parallel
   resource_group: TIC_POC1
 
