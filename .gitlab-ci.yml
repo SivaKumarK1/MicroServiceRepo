@@ -125,8 +125,8 @@ apply:
     - final plan
   only:
     - main
-  when: delayed
-  start_in: 60 seconds
+  # when: delayed
+  # start_in: 60 seconds
   # This ensures that only one instance of this job can run in case multiple workflows are launched in parallel
   resource_group: TIC_POC1
 
@@ -146,7 +146,8 @@ destroy:
     - terraform version
     # Provides git the ability to access other private projects for use as remote Terraform modules
     - terraform init
-  stage: terraform-job-apply
+  # stage: terraform-job-apply
+  extends: terraform-job
   script:
     - terraform destroy -auto-approve
   when: manual
