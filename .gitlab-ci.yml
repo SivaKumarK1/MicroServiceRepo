@@ -8,6 +8,7 @@ stages:
   - build # Docker compose up step
   - docker-deploy # Docker Hub
   - terraform-job # Terraform 
+  - terraform-job-apply 
   - ansible-job # Ansible
 
 # maven-job:
@@ -59,20 +60,70 @@ stages:
 #     - echo "started"
 #     - sh make.sh
 
+
+final plan:
+  stage: terraform-job
+  before_script:
+  - export AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID}
+  - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+  - rm -rf .terraform
+  - cd Terraform/Project
+  - terraform init
+  script:
+    - terraform plan -out=$PLAN -input=false
+  artifacts:
+    name: plan
+    paths:
+      - $PLAN
+    expire_in: 7 days
+  only:
+    - main
+  # This ensures that only one instance of this job can run in case multiple workflows are launched in parallel
+  resource_group: $ENVIRONMENT_NAME
+
+# Job: Apply | Stage: Apply
+# Purpose: Apply the new Terraform configuration settings found in the plan file
+apply:
+  stage: terraform-job-apply
+  environment:
+    name: $ENVIRONMENT_NAME
+    on_stop: destroy
+  script:
+    - terraform apply -input=false -auto-approve $PLAN
+    # - sh make.sh
+  dependencies:
+    - final plan
+  only:
+    - main
+  # This ensures that only one instance of this job can run in case multiple workflows are launched in parallel
+  # resource_group: $ENVIRONMENT_NAME
+
+# Job: Destroy | Stage: Apply
+# Purpose: Stop and destroy the resources configured by Terraform
+destroy:
+  stage: terraform-job-apply
+  script:
+    - terraform destroy -auto-approve
+  when: manual
+  only:
+    - main
+  environment:
+    name: $ENVIRONMENT_NAME
+    action: stop
+  retry: 2
+
 ansible:
   image: registry.gitlab.com/torese/docker-ansible
-  # extends: terraform
-  # dependencies:
-  #   - terraform
+  extends: terraform
+  dependencies:
+    - terraform
   before_script:
-    # - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
-    # - eval $(ssh-agent -s)
-    # - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-    # - mkdir -p ~/.ssh
-    # - chmod 700 ~/.ssh
     - cd Terraform/Project
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > terraform_key.pem
     - export ANSIBLE_HOST_KEY_CHECKING=False
   stage: ansible-job
   script:
     - ansible-playbook -i inventory/hosts playbook.yml
+  only:
+    - main
+  when: manual
