@@ -114,7 +114,7 @@ destroy:
 
 ansible:
   image: registry.gitlab.com/torese/docker-ansible
-  extends: terraform
+  # extends: terraform
   dependencies:
     - terraform
   before_script:
