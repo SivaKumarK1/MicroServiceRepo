@@ -79,14 +79,14 @@ final plan:
   only:
     - main
   # This ensures that only one instance of this job can run in case multiple workflows are launched in parallel
-  resource_group: $ENVIRONMENT_NAME
+  resource_group: TIC_POC1
 
 # Job: Apply | Stage: Apply
 # Purpose: Apply the new Terraform configuration settings found in the plan file
 apply:
   stage: terraform-job-apply
   environment:
-    name: $ENVIRONMENT_NAME
+    name: TIC_POC1
     on_stop: destroy
   script:
     - terraform apply -input=false -auto-approve $PLAN
@@ -96,7 +96,7 @@ apply:
   only:
     - main
   # This ensures that only one instance of this job can run in case multiple workflows are launched in parallel
-  # resource_group: $ENVIRONMENT_NAME
+  resource_group: TIC_POC1
 
 # Job: Destroy | Stage: Apply
 # Purpose: Stop and destroy the resources configured by Terraform
@@ -108,7 +108,7 @@ destroy:
   only:
     - main
   environment:
-    name: $ENVIRONMENT_NAME
+    name: TIC_POC1
     action: stop
   retry: 2
 
