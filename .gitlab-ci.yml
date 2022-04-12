@@ -147,7 +147,7 @@ destroy:
     # Provides git the ability to access other private projects for use as remote Terraform modules
     - terraform init
   # stage: terraform-job-apply
-  extends: terraform-job
+  extends: final plan
   script:
     - terraform destroy -auto-approve
   when: manual
