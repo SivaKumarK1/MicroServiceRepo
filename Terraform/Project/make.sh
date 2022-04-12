@@ -7,17 +7,17 @@ terraform init
 
 terraform plan
 
-terraform apply -var-file="var.tfvars" --auto-approve
+terraform apply  --auto-approve
 
-terraform output | grep -Po '(\d+[.]){3}\d+' > ips
+terraform output | grep -o '(\d+[.]){3}\d+' > ips
 
 #change master ip in hosts file
 rm temp.txt
 sed -i "s/$(awk 'FNR == 2' inventory/hosts > temp.txt && awk '{print $1}' temp.txt)/$(awk "FNR == 2" ips)/g" inventory/hosts
-#change worker ip in hosts file
+change worker ip in hosts file
 rm temp.txt
 sed -i "s/$(awk 'FNR == 4' inventory/hosts > temp.txt && awk '{print $1}' temp.txt)/$(awk "FNR == 3" ips)/g" inventory/hosts
-#change postgres ip in hosts file
+change postgres ip in hosts file
 rm temp.txt
 sed -i "s/$(awk 'FNR == 6' inventory/hosts > temp.txt && awk '{print $1}' temp.txt)/$(awk "FNR == 1" ips)/g" inventory/hosts
 
@@ -29,3 +29,5 @@ sleep 1m
 # ansible-playbook -i inventory/hosts playbook.yml
 
 rm ips  temp.txt
+
+cat inventory/hosts
