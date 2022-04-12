@@ -145,7 +145,7 @@ destroy:
     - cd Terraform/Project
     - terraform version
     # Provides git the ability to access other private projects for use as remote Terraform modules
-    - terraform init
+    # - terraform init
   # stage: terraform-job-apply
   extends: final plan
   script:
