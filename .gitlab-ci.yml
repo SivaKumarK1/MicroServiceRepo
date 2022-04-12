@@ -60,7 +60,7 @@ stages:
 #     - sh make.sh
 
 ansible:
-  image: ansible
+  image: registry.gitlab.com/torese/docker-ansible
   # extends: terraform
   # dependencies:
   #   - terraform
