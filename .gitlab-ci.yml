@@ -37,33 +37,33 @@ stages:
 #   script:
 #     - sh Docker_Deploy.sh
 
-terraform:
-  image: 
-    name: hashicorp/terraform:light
-    entrypoint:
-      - '/usr/bin/env'
-      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
-  before_script:
-  - export AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID}
-  - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-  - rm -rf .terraform
-  - cd Terraform/Project
-  - terraform --version
-  - terraform init
-  artifacts:
-    paths:
-      - Terraform/Project/inventory/hosts
+# terraform:
+#   image: 
+#     name: hashicorp/terraform:light
+#     entrypoint:
+#       - '/usr/bin/env'
+#       - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+#   before_script:
+#   - export AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID}
+#   - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+#   - rm -rf .terraform
+#   - cd Terraform/Project
+#   - terraform --version
+#   - terraform init
+#   artifacts:
+#     paths:
+#       - Terraform/Project/inventory/hosts
 
-  stage: terraform-job 
-  script:
-    - echo "started"
-    - sh make.sh
+#   stage: terraform-job 
+#   script:
+#     - echo "started"
+#     - sh make.sh
 
 ansible:
   image: ansible
-  extends: terraform
-  dependencies:
-    - terraform
+  # extends: terraform
+  # dependencies:
+  #   - terraform
   before_script:
     # - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
     # - eval $(ssh-agent -s)
