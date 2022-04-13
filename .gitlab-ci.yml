@@ -2,6 +2,7 @@ image: docker/compose:latest
 services:
   - docker:dind
 
+
 variables:
   # Provides a filename for the Terraform plan file
   PLAN: plan.tfplan
@@ -21,32 +22,32 @@ stages:
   - ansible-job # Ansible
 
 
-maven-job:
-  image: maven
-  stage: maven-compile
-  script:
-    - sh Jars.sh
-  artifacts:
-    paths:
-      - user_service/target/*.jar
-      - contact_service/target/*.jar
+# maven-job:
+#   image: maven
+#   stage: maven-compile
+#   script:
+#     - sh Jars.sh
+#   artifacts:
+#     paths:
+#       - user_service/target/*.jar
+#       - contact_service/target/*.jar
 
-build-job:    
-  stage: build
-  dependencies:
-    - maven-job
-  script:
-    - echo "Compiling the code..."
-    - docker-compose up --build -d
-    - echo "Compile complete."
+# build-job:    
+#   stage: build
+#   dependencies:
+#     - maven-job
+#   script:
+#     - echo "Compiling the code..."
+#     - docker-compose up --build -d
+#     - echo "Compile complete."
 
 
-docker-job:
-  stage: docker-deploy
-  dependencies:
-    - maven-job
-  script:
-    - sh Docker_Deploy.sh
+# docker-job:
+#   stage: docker-deploy
+#   dependencies:
+#     - maven-job
+#   script:
+#     - sh Docker_Deploy.sh
 
 # terraform:
 #   image: 
@@ -73,30 +74,42 @@ docker-job:
 
 final plan:
   image: 
-    name: hashicorp/terraform:light
+    name: hashicorp/terraform:light      
     entrypoint:
       - '/usr/bin/env'
       - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
   stage: terraform-job
   before_script:
-  - export AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID}
-  - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-  - rm -rf .terraform
-  - cd Terraform/Project
-  - terraform version
-  # Provides git the ability to access other private projects for use as remote Terraform modules
-  - terraform init
+    - export AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID}
+    - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    - rm -rf .terraform
+    - cd Terraform/Project
+    - terraform version
+    # Provides git the ability to access other private projects for use as remote Terraform modules
+    - terraform init  
+  cache:
+    key: example-production
+    paths:
+      - ./.terraform
   script:
     - terraform plan -out=$PLAN -input=false
+    - terraform plan-json
   artifacts:
     name: plan
     paths:
       - Terraform/Project/$PLAN
+      - Terraform/Project/plan.cache
     expire_in: 7 days
+    reports:
+      terraform: Terraform/Project/plan.json       
   only:
     - main
   # This ensures that only one instance of this job can run in case multiple workflows are launched in parallel
   resource_group: TIC_POC1
+
+
+
+
 
 # Job: Apply | Stage: Apply
 # Purpose: Apply the new Terraform configuration settings found in the plan file
