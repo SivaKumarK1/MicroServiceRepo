@@ -121,7 +121,16 @@ apply:
     on_stop: destroy
   script:
     - terraform apply -input=false -auto-approve $PLAN
-    # - sh make.sh
+    - terraform output | grep -o '(\d+[.]){3}\d+' > ips
+    - export master_ip=$(awk "FNR == 2" ips)
+    - export worker_ip=$(awk "FNR == 3" ips)
+    - export postgres_ip=$(awk "FNR == 1" ips)
+    - echo "master_ip=$master_ip" >> build.env
+    - echo "worker_ip=$worker_ip" >> build.env
+    - echo "postgres_ip=$postgres_ip" >> build.env
+  artifacts:
+    reports:
+      dotenv: build.env
   dependencies:
     - final plan
   only:
@@ -161,7 +170,7 @@ destroy:
 
 ansible:
   image: registry.gitlab.com/torese/docker-ansible
-  extends: final plan
+  stage: ansible-job
   dependencies:
     - final plan
   before_script:
@@ -169,6 +178,9 @@ ansible:
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > terraform_key.pem
     - export ANSIBLE_HOST_KEY_CHECKING=False
   stage: ansible-job
+  needs:
+    - job: apply
+      artifacts: true
   script:
     - ansible-playbook -i inventory/hosts playbook.yml
   only:
